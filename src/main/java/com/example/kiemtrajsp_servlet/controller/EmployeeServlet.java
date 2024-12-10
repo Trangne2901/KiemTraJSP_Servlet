@@ -31,6 +31,9 @@ public class EmployeeServlet extends HttpServlet {
             case "delete":
                 deleteEmployee(request, response);
                 break;
+            case "edit":
+                showUpdate(request, response);
+                break;
             default:
                 showEmployee(request, response);
                 break;
@@ -47,6 +50,9 @@ public class EmployeeServlet extends HttpServlet {
         switch (action) {
             case "addEmployee":
                 addEmployee(request, response);
+                break;
+            case "update":
+                updateEmployee(request, response);
                 break;
             default:
                 showEmployee(request, response);
@@ -83,5 +89,30 @@ public class EmployeeServlet extends HttpServlet {
         employeeService.deleteEmployee(id);
         response.sendRedirect("employee");
 
+    }
+
+    private void showUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Employee employee = employeeService.getEmployeeById(id);
+        request.setAttribute("employee",employee);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("employee-update.jsp");
+        dispatcher.forward(request,response);
+    }
+
+    private void updateEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        int age = Integer.parseInt(request.getParameter("age"));
+        String position = request.getParameter("position");
+        String department = request.getParameter("department");
+        double salary = Double.parseDouble(request.getParameter("salary"));
+        Employee employee = employeeService.getEmployeeById(id);
+        employee.setName(name);
+        employee.setAge(age);
+        employee.setPosition(position);
+        employee.setDepartment(department);
+        employee.setSalary(salary);
+        employeeService.updateEmployee(id, employee);
+        response.sendRedirect("/employee");
     }
 }
