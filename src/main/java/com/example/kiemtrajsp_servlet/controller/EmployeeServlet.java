@@ -4,6 +4,7 @@ import com.example.kiemtrajsp_servlet.model.Employee;
 import com.example.kiemtrajsp_servlet.service.EmployeeService;
 import com.example.kiemtrajsp_servlet.service.EmployeeServiceImpl;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,12 +28,17 @@ public class EmployeeServlet extends HttpServlet {
             case "add":
                 showNewForm(request, response);
                 break;
+            case "delete":
+                deleteEmployee(request, response);
+                break;
             default:
                 showEmployee(request, response);
                 break;
 
         }
-    } @Override
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
@@ -72,4 +78,10 @@ public class EmployeeServlet extends HttpServlet {
         response.sendRedirect("employee");
     }
 
+    private void deleteEmployee(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        employeeService.deleteEmployee(id);
+        response.sendRedirect("employee");
+
+    }
 }
