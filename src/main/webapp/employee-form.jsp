@@ -26,7 +26,5 @@
     <input type="submit" value="Add Employee">
 </form>
 <a href="employee">Back to Employee List</a>
-
-<a href="employee">Back to Employee List</a>
 </body>
 </html>
